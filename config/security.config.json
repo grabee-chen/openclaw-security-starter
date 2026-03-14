@@ -1,0 +1,51 @@
+{
+  "_schema_version": "1.0.0",
+  "_edition": "basic",
+  "_description": "OpenClaw Security Starter — Runtime Security Configuration",
+
+  "identity": {
+    "agent_name": "openclaw-security-starter",
+    "edition": "basic",
+    "deployed_via": "docker",
+    "platform": "zeabur"
+  },
+
+  "access_control": {
+    "owner_only_mode": true,
+    "require_mention": true,
+    "delegate_enabled": false,
+    "public_read_enabled": false,
+    "allowed_channels": []
+  },
+
+  "rate_limiting": {
+    "enabled": true,
+    "requests_per_minute_per_user": 10,
+    "injection_attempt_threshold": 3,
+    "cooldown_seconds": 300
+  },
+
+  "injection_guard": {
+    "enabled": true,
+    "max_input_length": 2000,
+    "blocklist_enabled": true,
+    "encoding_detection": true,
+    "structural_anomaly_detection": true
+  },
+
+  "tool_policy": {
+    "blocked_tools": [
+      "delete_file",
+      "run_query"
+    ],
+    "allowed_domains": [],
+    "http_request_enabled": false
+  },
+
+  "audit": {
+    "log_all_commands": true,
+    "log_rejections": true,
+    "log_injection_attempts": true,
+    "include_payload_in_logs": false
+  }
+}

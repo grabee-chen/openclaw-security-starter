@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────
+# OpenClaw Security Starter — .gitignore
+# ─────────────────────────────────────────────
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.secret
+*.token
+
+# OpenClaw Runtime Data (persisted via Zeabur volume, NOT committed to git)
+/home/node/.openclaw/
+.openclaw/
+
+# Node.js (legacy — not used in Docker-First mode)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+dist/
+build/
+.next/
