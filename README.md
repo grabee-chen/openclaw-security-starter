@@ -166,5 +166,8 @@ This template is licensed for **commercial use** by the purchaser only. Redistri
 ---
 
 <div align="center">
-Built with the <strong>Grabee AI Automation Architecture</strong>
+  <p style="font-weight: bold; margin-bottom: 12px; font-size: 1.05em;">Grabee AI Automation</p>
+  <a href="#">
+    <img src="https://img.shields.io/badge/%E2%9C%A6%20Powered%20by-Grabee%20AI%20Studio-60defc?labelColor=131e2a&style=for-the-badge" alt="Powered by Grabee AI Studio">
+  </a>
 </div>
