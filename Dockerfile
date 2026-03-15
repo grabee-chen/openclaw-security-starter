@@ -1,8 +1,7 @@
 FROM ghcr.io/openclaw/openclaw:latest
-
-# All config, credentials, and workspace data are persisted
-# under /home/node/.openclaw/ via Zeabur's persistent volume.
-# No additional build steps needed — the official image is complete.
-
-# The gateway listens on port 18789
+COPY security/   /app/security/
+COPY config/     /app/config/
+COPY extensions/ /app/extensions/
+COPY skills/     /app/skills/
+COPY docs/       /app/docs/
 EXPOSE 18789
