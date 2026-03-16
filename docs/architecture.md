@@ -1,13 +1,13 @@
 # Security Architecture — OpenClaw Security Starter
 
 **Version:** 1.0.0 (Basic Edition)
-**Deployment Target:** Zeabur (Docker-First)
+**Deployment Target:** Docker Container (Local / Cloud)
 
 ---
 
 ## 1. System Overview
 
-The OpenClaw Security Starter implements a **Multi-Layer Security Stack** deployed as a Docker container on Zeabur. The architecture follows a defense-in-depth model, where each layer independently validates trust before passing execution to the next layer.
+The OpenClaw Security Starter implements a **Multi-Layer Security Stack** deployed as a Docker container. The architecture follows a defense-in-depth model, where each layer independently validates trust before passing execution to the next layer.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -68,7 +68,7 @@ The OpenClaw Security Starter implements a **Multi-Layer Security Stack** deploy
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  Zeabur Cloud Platform                          │
+│  Container Hosting Platform (Local/Cloud)       │
 │                                                 │
 │  ┌───────────────────────────────────────────┐  │
 │  │  Docker Container                         │  │
@@ -113,8 +113,8 @@ graph TD
 
 | Priority | Source | Notes |
 |----------|--------|-------|
-| 1 (Highest) | `/home/node/.openclaw/config/security.config.json` | Persisted via Zeabur volume |
-| 2 | Environment Variables (`OPENCLAW_*`) | Set in Zeabur service dashboard |
+| 1 (Highest) | `/home/node/.openclaw/config/security.config.json` | Persisted via volume mount |
+| 2 | Environment Variables (`OPENCLAW_*`) | Set via `docker run -e` or Dashboard |
 | 3 (Lowest) | Built-in defaults (image defaults) | Failsafe; always most restrictive |
 
 

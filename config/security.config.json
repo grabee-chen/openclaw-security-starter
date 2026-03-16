@@ -7,7 +7,7 @@
     "agent_name": "openclaw-security-starter",
     "edition": "basic",
     "deployed_via": "docker",
-    "platform": "zeabur"
+    "platform": "generic"
   },
 
   "access_control": {

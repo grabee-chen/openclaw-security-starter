@@ -4,19 +4,30 @@
 ### Basic Edition — v1.0.0
 
 **A production-ready, Docker-first security template for OpenClaw agents.**  
-Deploy to Zeabur in minutes. No Node.js setup required.
+Deploy to any container hosting provider in minutes. No Node.js setup required.
 
-[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://zeabur.com)
-[![License: Commercial](https://img.shields.io/badge/License-Commercial-blue.svg)](#license)
+[![License: Non-Commercial](https://img.shields.io/badge/License-Non_Commercial-red.svg)](#license)
 [![Docker](https://img.shields.io/badge/Docker-ghcr.io%2Fopenclaw%2Fopenclaw-blue?logo=docker)](https://ghcr.io/openclaw/openclaw)
 
 </div>
 
 ---
 
+## 🛡️ The Pain Point: Safety in OpenClaw Agents
+
+When leveraging advanced Autonomous Agents like **OpenClaw**, absolute power requires absolute control. The primary barrier to integrating AI fully is **Safety & Integrity Risk**:
+
+*   🚨 **Prompt Injections**: Malicious commands triggering unauthorized acts.
+*   💀 **Overprivileged Tooling**: Accidental system/file deletes due to lack of guardrails.
+*   🔓 **Unauthorized Inbound Requests**: Insecure triggers without permission boundaries.
+
+**This Starter exists to fix that.** It enforces air-tight layered defenses ensure your Agent stays safe, operates within guardrails, and defends itself against adversarial scenarios right out-of-the-box.
+
+---
+
 ## 📦 What's Included
 
-This template provides a **Multi-Layer Security Stack** for your OpenClaw agent, pre-configured and ready for production deployment on Zeabur.
+This template provides a **Multi-Layer Security Stack** for your OpenClaw agent, pre-configured and ready for production deployment on any platform fully supporting Docker.
 
 | Layer | File | Description |
 |-------|------|-------------|
@@ -32,7 +43,7 @@ This template provides a **Multi-Layer Security Stack** for your OpenClaw agent,
 ```
 openclaw-security-starter/
 ├── Dockerfile                    # Docker-first deployment (inherits official image)
-├── zbpack.json                   # Zeabur build configuration
+├── zbpack.json                   # Optional: deployment triggers
 ├── .gitignore                    # Protects secrets and runtime data
 │
 ├── security/
@@ -50,60 +61,64 @@ openclaw-security-starter/
 
 ---
 
-## 🚀 Deployment Guide (Zeabur)
+## 🚀 Deployment Guide (Docker)
 
-### Prerequisites
+Since this template is fully containerized with **Docker**, you can deploy it on almost anything: from your **Local Machine (Mac / PC)**, a sitting **Home Server**, to any **Cloud VPS** or hosting provider.
 
-- A [Zeabur](https://zeabur.com) account
-- A Zeabur project with a **Persistent Volume** configured
+### Option 1: Local / Homelab (Mac, PC, Linux)
 
-### Step 1: Fork or Clone This Repository
+Perfect for local testing and running on a local desktop or server setup.
 
+#### 1. Fork or Clone This Repository
 ```bash
 git clone https://github.com/your-org/openclaw-security-starter.git
 cd openclaw-security-starter
 ```
 
-### Step 2: Create a New Service on Zeabur
+#### 2. Run with Docker
+Mount your local security configurations to the container and run:
 
-1. Open your Zeabur project dashboard.
-2. Click **"Add Service"** → **"Git"**.
-3. Connect this repository.
-4. Zeabur will automatically detect `zbpack.json` and use the **Dockerfile** build method.
+```bash
+docker build -t openclaw-security .
 
-### Step 3: Configure Environment Variables
+docker run -d \
+  -p 18789:18789 \
+  -v $(pwd)/security:/home/node/.openclaw/security \
+  -v $(pwd)/config:/home/node/.openclaw/config \
+  -e OPENCLAW_OWNER_ID="your_user_id" \
+  -e OPENCLAW_AGENT_TOKEN="your_agent_token" \
+  openclaw-security
+```
 
-In the Zeabur service settings, set the following environment variables:
+---
+
+### Option 2: Cloud Deploy (Example: Deploy with Zeabur)
+
+This is a verified cloud deployment route using **Zeabur** to illustrate the ultimate template-syncing workflow. 
+
+Rather than mounting local storage disk volumes, this project uses the `Dockerfile` to automatically bake in your config files (`COPY security/ /app/security/`) whenever building.
+
+#### 1. Deploy the Base OpenClaw Template
+1. Open your Zeabur dashboard or Marketplace.
+2. Deploy the standard **OpenClaw** service first to verify the agent is alive and listening.
+
+#### 2. Bind This Custom Repository
+To apply your layered security rules, link this repository straight into your service:
+1. Go to your Zeabur Dashboard -> Select your Project -> Select OpenClaw Service -> **Settings**.
+2. Scroll to **Source** -> Click **"Bind GitHub Repository"**.
+3. Pick your forked repository, specify the Branch (`main`), and click **Save & Redeploy**.
+
+Zeabur will pick up the `Dockerfile` and bake your security policies directly into the operating layer. **No Persistent Volume configuration required!**
+
+#### 3. Configure Environment Variables
+In the Zeabur service settings dashboard, ensure the following remain set:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `OPENCLAW_OWNER_ID` | ✅ Yes | Your Discord/platform user ID (grants OWNER access) |
 | `OPENCLAW_AGENT_TOKEN` | ✅ Yes | The API token for the OpenClaw agent |
-| `OPENCLAW_LOG_LEVEL` | Optional | Log verbosity: `error`, `warn`, `info` (default: `info`) |
 
-> ⚠️ **Security Warning:** Never commit `OPENCLAW_AGENT_TOKEN` or any credentials to your repository. Always set them as Zeabur environment variables.
-
-### Step 4: Mount the Persistent Volume
-
-Configure a Zeabur Persistent Volume mounted at:
-
-```
-/home/node/.openclaw/
-```
-
-Copy your security configuration to the volume:
-
-```
-/home/node/.openclaw/config/security.config.json
-/home/node/.openclaw/security/SHIELD.md
-/home/node/.openclaw/security/AGENT_RULES.md
-/home/node/.openclaw/security/PROMPT_INJECTION_GUARD.md
-/home/node/.openclaw/security/TOOL_POLICY.md
-```
-
-### Step 5: Deploy
-
-Click **Deploy** in the Zeabur dashboard. The agent will start on **port 18789**.
+> ⚠️ **Security Warning:** Never commit `OPENCLAW_AGENT_TOKEN` or any credentials to your repository. Keep them as Environment Variables in your dashboard.
 
 ---
 
@@ -157,11 +172,14 @@ The **Basic Edition** is intentionally minimal. The following are available in P
 - ❌ Custom skill extensions
 - ❌ Multi-agent orchestration
 
----
-
 ## 📄 License
 
-This template is licensed for **commercial use** by the purchaser only. Redistribution or resale of the template itself is prohibited. See `LICENSE` for full terms.
+This template is licensed for **Personal, Educational, and Non-Commercial Use** only.
+
+*   ✅ **Allowed**: Technical testing, research, and deployment on **your own personal** non-profit OpenClaw agent nodes (e.g., local PC/Server).
+*   ❌ **Prohibited**: **Any commercial setups, enterprise use for profit, or repackaging and resale** of these security files as a digital product template.
+
+See `LICENSE` for full terms.
 
 ---
 
